@@ -1,0 +1,31 @@
+DECLARE
+  l_html VARCHAR2(32767);
+  L_LOGOPATH SSSLBS.LB_WORKINGUNIT.LOGOPATH%TYPE := 'comlogo.jpg';
+  L_LOGO SSSLBS.LB_WORKINGUNITLOGO.LOGO%TYPE;
+BEGIN
+  
+  SELECT WUL.LOGO
+  INTO   L_LOGO
+  FROM   SSSLBS.LB_WORKINGUNIT WU
+  INNER JOIN SSSLBS.LB_WORKINGUNITLOGO WUL ON WU.WORKINGUNITCODE=WUL.WORKINGUNITCODE
+  WHERE  WU.WORKINGUNITCODE = 2;
+  
+  l_html := '<html>
+                <head>
+                  <title>Test HTML message</title>
+                </head>
+                <body>
+                  <p>This is a <b>HTML</b> <i>version</i> of the test message.</p>
+                  <p><img id="bg" src="comlogo.jpg" alt="Site Logo" />
+                </body>
+              </html>';
+  
+  send_mail_1(p_to          => 'mahbub<mahbub@lbsbd.com>',
+            p_from        => 'Sharif<shariful@lbsbd.com>',
+            p_subject     => 'Test Subject',
+            p_text_msg    => l_html,
+            p_attach_name => L_LOGOPATH,
+            p_attach_mime => 'image/jpg',
+            p_attach_blob => L_LOGO,
+            p_smtp_host   => '192.168.10.15');
+END;
