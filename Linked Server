@@ -1,0 +1,7 @@
+Oracle OLEDB Service Name: OraOLEDB.Oracle
+
+EXEC sp_addlinkedserver   'ORCLBO',  'Oracle',  'OraOLEDB.Oracle',  'ODAERP';
+EXEC sp_addlinkedsrvlogin 'ORCLBO', 'FALSE', NULL, 'vodlbs', 'vodlbs';
+
+
+EXEC sp_serveroption 'ORCLBO', 'collation compatible', 'true';
