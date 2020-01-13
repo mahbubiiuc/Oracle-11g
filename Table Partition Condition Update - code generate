@@ -1,0 +1,31 @@
+-- TABLE PARTITIONS RANGE UPDATE
+DECLARE 
+        V_SQLTEXT VARCHAR2(5000):='';
+        V_COND VARCHAR2(500) := ''' 2031-01-01 00:00:00'', ''SYYYY-MM-DD HH24:MI:SS'', ''NLS_CALENDAR=GREGORIAN''';
+BEGIN
+  FOR c IN
+  ( 
+	  SELECT A.owner, A.table_name, A.tablespace_name,tp.partition_name, A.index_name
+      FROM dba_indexes A 
+     INNER JOIN Dba_Users B ON A.owner=B.username
+     INNER JOIN dba_tab_partitions tp ON A.owner  = tp.table_owner AND A.table_name = tp.table_name AND A.tablespace_name = tp.tablespace_name
+     WHERE A.owner IN('VODLBF' )
+       AND A.tablespace_name IS NOT NULL
+     --AND A.table_name LIKE 'LB_%'
+       AND B.default_tablespace = 'VODLBF_DEF'
+       AND (A.index_name LIKE '%_PK%' OR A.index_name LIKE 'PK_%')
+  )
+  LOOP
+   
+    V_SQLTEXT := 'alter table '|| c.table_name ||' 
+add partition TEST2030 values less than ( TO_DATE('|| V_COND ||') ) tablespace '|| c.tablespace_name ||';            
+alter table '|| c.table_name ||' merge partitions '|| c.partition_name ||', TEST2030  into partition TEST2 tablespace '|| c.tablespace_name ||';
+ALTER TABLE '|| c.table_name ||' RENAME PARTITION TEST2 TO '|| c.partition_name ||';';
+
+
+    dbms_output.put_line(V_SQLTEXT);
+    dbms_output.put_line('');
+
+    --dbms_utility.exec_ddl_statement(V_SQLTEXT);
+  END LOOP;
+END;
