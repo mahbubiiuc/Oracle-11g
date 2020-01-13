@@ -1,0 +1,19 @@
+-- Revoking from dba
+revoke dba from vodlive;
+
+-- Granting to DBA
+revoke dba to vodlive;
+
+-- Granting with limitation (suggested)
+grant connect, resource to vodlive;
+grant create database link to vodlive;
+grant create library to vodlive;
+grant create materialized view to vodlive;
+grant create procedure to vodlive;
+grant create sequence to vodlive;
+grant create session to vodlive;
+grant create synonym to vodlive;
+grant create table to vodlive;
+grant create trigger to vodlive;
+grant create type to vodlive;
+grant create view to vodlive;
