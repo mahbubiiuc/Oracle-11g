@@ -1,0 +1,7 @@
+-- INDEX REBUILD
+begin
+for x in ( select index_name from user_indexes )
+loop
+dbms_output.Put_line('alter index ' || x.index_name || ' rebuild;'); -- 'alter index ' || x.index_name || ' rebuild';
+end loop;
+end;
