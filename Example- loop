@@ -1,0 +1,9 @@
+DECLARE 
+        V_SQLTEXT VARCHAR2(5000):='';
+begin
+for x in ( select index_name from user_indexes )
+loop
+dbms_output.Put_line('alter index ' || x.index_name || ' rebuild;'); -- 'alter index ' || x.index_name || ' rebuild';
+dbms_output.Put_line(V_SQLTEXT);
+end loop;
+end;
