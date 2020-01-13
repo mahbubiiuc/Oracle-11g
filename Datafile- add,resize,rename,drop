@@ -1,0 +1,21 @@
+-- add datafile to existing tablespace
+ALTER TABLESPACE YrDef
+   ADD DATAFILE '/u01/app/oracle/oradata/orcl/YrDef00.dbf' SIZE 250M;
+
+-- resize datafile
+ALTER DATABASE DATAFILE '/u01/app/oracle/oradata/orcl/vod_Def.dbf' RESIZE 500M;
+   
+-- rename datafile
+-- Step 1.
+ALTER TABLESPACE users OFFLINE NORMAL;
+-- Step 2.then rename at OS level
+-- Step 3.
+ALTER TABLESPACE YrDef
+    RENAME DATAFILE '/u01/app/oracle/oradata/orcl/YrDef00.dbf',
+                    '/u01/app/oracle/oradata/orcl/YrDef01.dbf'
+                 TO '/u01/app/oracle/oradata/orcl/YrDefXX.dbf'
+                    '/u01/app/oracle/oradata/orcl/YrDefYY.dbf';
+                    
+-- drop datafile 
+ALTER TABLESPACE YrDef DROP DATAFILE '/u01/app/oracle/oradata/orcl/YrDef00.dbf';   
+                    
