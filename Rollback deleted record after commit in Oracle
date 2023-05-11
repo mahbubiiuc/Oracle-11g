@@ -1,0 +1,5 @@
+/**
+ * following command, we retrieve a snapshot of our table as of 1 minutes ago.
+**/
+Select * From prm_eos as of timestamp(SYSDATE-1) WHERE EMPID = 1;
+
